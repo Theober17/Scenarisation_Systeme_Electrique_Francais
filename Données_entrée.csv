@@ -1,0 +1,24 @@
+Année,Source de production,Bilan électrique (TWh),Parc installé (GW),FC (%),ramping,FC minumum (%),Consommation annuelle (TWh)
+2035.0,nucleaire base,352.8,32.3,69.2,1.0,30.0,483.1
+2035.0,nucleaire flexible,35.7,16.2,69.2,15.0,0.0,483.1
+2035.0,gaz cycle combinés + TC,33.7,7.1,27.5,40.0,0.0,483.1
+2035.0,gaz - cogénérations,2.0,4.4,24.6,,,483.1
+2035.0,charbon,187.9,0.0,0.0,60.0,0.0,483.1
+2035.0,pétrole,59.8,1.7,7.4,30.0,5.0,483.1
+2035.0,biomasse,3.6,4.1,50.1,,,483.1
+2035.0,hydraulique,66.5,21.3,32.3,,,483.1
+2035.0,éolien terrestre,16.5,52.3,25.0,,,483.1
+2035.0,photovoltaïque,28.4,48.5,13.7,,,483.1
+,Eolien offshore,,,,,,
+2035.0,Somme,1.5,1.5,47.0,,,483.1
+2035.0,Seine-Maritime,1.5,1.5,47.0,,,483.1
+2035.0,Calvados,1.45,1.45,47.0,,,483.1
+2035.0,Nord,1.6,1.6,46.9,,,483.1
+2035.0,Cotes-dArmor,1.5,1.5,47.0,,,483.1
+2035.0,Loire-Atlantique,1.48,1.48,47.0,,,483.1
+2035.0,Charente-Maritime,1.0,1.0,43.0,,,483.1
+2035.0,Gironde,1.0,1.0,43.0,,,483.1
+2035.0,Herault,1.0,1.0,48.0,,,483.1
+2035.0,Vendee,1.5,1.5,47.0,,,483.1
+2035.0,exports,28.0,,,25.0,,483.1
+2035.0,imports,23.0,,,20.0,,483.1

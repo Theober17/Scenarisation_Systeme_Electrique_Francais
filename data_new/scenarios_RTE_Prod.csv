@@ -1,0 +1,103 @@
+﻿Filière;Bilan électrique (TWh);Parc installé (GW);FC (%);Ramping;FC minimum (%);scénario
+nucléaire (total);0;0;0;;;M0
+nucléaire base;0;0;0;0.01;0.3;M0
+nucléaire flexible;0;0;0;0.15;0;M0
+éolien onshore;149;74;0.23;;;M0
+éolien offshore;224;62;0.41;;;M0
+photovoltaïque;255;208;0.14;;;M0
+énergies marines;9;3;0.34;;;M0
+bioénergies;12;2;0.68;;;M0
+hydraulique;63;22;0.33;;;M0
+gaz;1.1;0.4;0.31;0.4;0;M0
+pétrole;0.087;0.1;0.1;0.3;0.05;M0
+STEP;14;8;0.2;;;M0
+thermique décarboné;;29;;0.2;;M0
+imports;;39;;0.2;;M0
+exports;;54.6;;0.25;;M0
+batteries;;26;;;;M0
+total production;793.2;528.1;0.17;;;M0
+nucléaire (total);91;16;0.65;;;M1
+nucléaire base;60.8;10.7;0.65;0.01;0.3;M1
+nucléaire flexible;30.1;5.3;0.65;0.15;0;M1
+éolien onshore;119;59;0.23;;;M1
+éolien offshore;162;45;0.41;;;M1
+photovoltaïque;255;214;0.14;;;M1
+énergies marines;3;1;0.34;;;M1
+bioénergies;12;2;0.68;;;M1
+hydraulique;63;22;0.33;;;M1
+gaz;1.1;0.4;0.31;0.4;0;M1
+pétrole;0.087;0.1;0.1;0.3;0.05;M1
+STEP;14;8;0.2;;;M1
+thermique décarboné;;20;;0.2;;M1
+imports;;39;;0.2;;M1
+exports;;54.6;;0.25;;M1
+batteries;;21;;;;M1
+total production;765.7;502.1;0.17;;;M1
+nucléaire (total);91;16;0.65;;;M23
+nucléaire base;60.8;10.7;0.65;0.01;0.3;M23
+nucléaire flexible;30.1;5.3;0.65;0.15;0;M23
+éolien onshore;145;72;0.23;;;M23
+éolien offshore;215;60;0.41;;;M23
+photovoltaïque;153;125;0.14;;;M23
+énergies marines;9;3;0.34;;;M23
+bioénergies;12;2;0.68;;;M23
+hydraulique;62;22;0.32;;;M23
+gaz;1.1;0.4;0.31;0.4;0;M23
+pétrole;0.087;0.1;0.1;0.3;0.05;M23
+STEP;14;8;0.2;;;M23
+thermique décarboné;;20;;0.2;;M23
+imports;;39;;0.2;;M23
+exports;;54.6;;0.25;;M23
+batteries;;13;;;;M23
+total production;747.7;435.1;0.2;;;M23
+nucléaire (total);182;29;0.71;;;N1
+nucléaire base;121.3;19.3;0.72;0.01;0.3;N1
+nucléaire flexible;60.7;9.7;0.71;0.15;0;N1
+éolien onshore;117;58;0.23;;;N1
+éolien offshore;160;45;0.4;;;N1
+photovoltaïque;144;118;0.14;;;N1
+énergies marines;0;0;0;;;N1
+bioénergies;12;2;0.68;;;N1
+hydraulique;63;22;0.33;;;N1
+gaz;1.1;0.4;0.31;0.4;0;N1
+pétrole;0.087;0.1;0.1;0.3;0.05;N1
+STEP;14;8;0.2;;;N1
+thermique décarboné;;11;;0.2;;N1
+imports;;39;;0.2;;N1
+exports;;54.6;;0.25;;N1
+batteries;;9;;;;N1
+total production;718.2;396.1;0.21;;;N1
+nucléaire (total);252;39;0.74;;;N2
+nucléaire base;168;26;0.74;0.01;0.3;N2
+nucléaire flexible;84;13;0.74;0.15;0;N2
+éolien onshore;104;52;0.23;;;N2
+éolien offshore;129;36;0.41;;;N2
+photovoltaïque;110;90;0.14;;;N2
+énergies marines;0;0;0;;;N2
+bioénergies;12;2;0.68;;;N2
+hydraulique;63;22;0.33;;;N2
+gaz;1.1;0.4;0.31;0.4;0;N2
+pétrole;0.087;0.1;0.1;0.3;0.05;N2
+STEP;14.1;8;0.2;;;N2
+thermique décarboné;;5;;0.2;;N2
+imports;;39;;0.2;;N2
+exports;;54.6;;0.25;;N2
+batteries;;2;;;;N2
+total production;696.67;350.1;0.23;;;N2
+nucléaire (total);338;51;0.75;;;N03
+nucléaire base;225.3;34;0.75;0.01;0.3;N03
+nucléaire flexible;112.7;17;0.75;0.15;0;N03
+éolien onshore;87;43;0.23;;;N03
+éolien offshore;78;22;0.4;;;N03
+photovoltaïque;86;70;0.14;;;N03
+énergies marines;0;0;;;;N03
+bioénergies;12;2;0.68;;;N03
+hydraulique;63;22;0.33;;;N03
+gaz;0;0;0;0.4;0;N03
+pétrole;0;0;0;0.3;0.05;N03
+STEP;14.1;8;0.2;;;N03
+thermique décarboné;;0;;0.2;;N03
+imports;;39;;0.2;;N03
+exports;;54.6;;0.25;;N03
+batteries;;1;;;;N03
+total production;678.1;312.6;0.25;;;N03
