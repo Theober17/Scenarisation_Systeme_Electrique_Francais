@@ -1330,7 +1330,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ):
 
     parc_batterie_prod = round(sum(bat_discharge) / 1000000, 2)
 
-    col40=[]
+    col40 = []
     cycle_discharge = 0
     cycle_charge = 0
     nbcycles = 0

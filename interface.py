@@ -1240,12 +1240,12 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
 
     df_simulateur['technologie'] = ['nucléaire base',
                                     'nucléaire flexible',
-                                    'gaz cycle combinés + TC',
+                                    'gaz',
                                     'charbon',
                                     'pétrole',
-                                    'bioenergies',
+                                    'bioénergies',
                                     'hydraulique',
-                                    'éolien terrestre',
+                                    'éolien onshore',
                                     'photovoltaïque',
                                     'importations',
                                     'exportations',
@@ -1380,7 +1380,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     cycle[0] = True
     n = 1
     for i in range(1, 8760):
-        if cycle[i - 1] :
+        if cycle[i - 1] == True:
             if cycles[i] < 0 :
                 cycle[i] = False
             else :
@@ -1392,8 +1392,8 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                 cycle[i] = False
 
     for i in range(8759) :
-        if cycle[i] :
-            if cycle[i + 1] :
+        if cycle[i] == True:
+            if cycle[i + 1] == True:
                 cycle_charge = cycle_charge + cycles[i]
             else :
                 cycle_charge += + cycles[i]
@@ -1414,7 +1414,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                 
                 cycle_charge = 0
 
-            if not cycle[i + 1] :
+            if cycle[i + 1] == False :
                 cycle_discharge = cycle_discharge + cycles[i]
             else :
                 cycle_discharge = cycle_discharge + cycles[i]
@@ -1436,7 +1436,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                 
                 cycle_discharge = 0
 
-    df_scenario_simule = pd.DataFrame(columns=['date_heure', 'date', 'heure', 'effacement', 'total éolien offshore', 'consommation', 'consommation avec flexibilité', 'nucléaire base', 'nucléaire flexible', 'hydraulique', 'PV', 'éolien onshore', 'bioénergies', 'charbon', 'gaz', 'pétrole', 'importations', 'exportations', 'soldes échanges', 'STEP décharge', 'STEP charge', 'thermique décharge', 'thermique charge', 'effacement potentiel PV', 'effacement potentiel éolien onshore', 'effacemet potentiel éolien offshore', 'batterie décharge', 'batterie charge', 'pertes', 'variation nécessaire', 'stock batteries'])
+    df_scenario_simule = pd.DataFrame(columns=['date_heure', 'date', 'heure', 'effacement', 'éolien offshore', 'consommation', 'consommation avec flexibilité', 'nucléaire base', 'nucléaire flexible', 'hydraulique', 'PV', 'éolien onshore', 'bioénergies', 'charbon', 'gaz', 'pétrole', 'importations', 'exportations', 'soldes échanges', 'STEP décharge', 'STEP charge', 'thermique décharge', 'thermique charge', 'effacement potentiel PV', 'effacement potentiel éolien onshore', 'effacemet potentiel éolien offshore', 'batterie décharge', 'batterie charge', 'pertes', 'variation nécessaire', 'stock batteries'])
 
     dates = pd.date_range(start='2023-01-01', end='2023-12-31', freq='D')
 
@@ -1459,7 +1459,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     df_scenario_simule['date'] = date_series
     df_scenario_simule['heure'] = heure_series
     df_scenario_simule['effacement'] = effacement
-    df_scenario_simule['total éolien offshore'] = windoffT
+    df_scenario_simule['éolien offshore'] = windoffT
     df_scenario_simule['consommation'] = conso_horaire
     df_scenario_simule['consommation avec flexibilité'] = conso_horaire_flex
     df_scenario_simule['nucléaire base'] = [x * (1 + perte) for x in nucbase]
@@ -1588,6 +1588,14 @@ HORIZONTAL_RED = "image2.png"
 logo = "image.png"
 
 st.logo(HORIZONTAL_RED, icon_image=logo)
+
+flexinillite_conso = {"M0" : 15,
+     "M1" : 17,
+     "M23" : 15,
+     "N1" : 15,
+     "N2" : 15,
+     "N03" : 13
+     }
 
 
 # Configuration de la sidebar
@@ -1929,10 +1937,15 @@ if st.session_state.button_clicked:
             df_desequilibre = pd.DataFrame(data_desequilibre)
 
             st.dataframe(df_desequilibre.iloc[:2], hide_index=True)
-            st.write(f"effacement potentiel des énergies renouvables dans l'ordre suivant : {st.session_state.ordre_effacement_EnR}")
+            st.write(f"Effacement potentiel des énergies renouvables dans l'ordre suivant : **{st.session_state.ordre_effacement_EnR}**")
             st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True)
 
-            st.write(parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis)
+            st.write(f"Flexibilité de la consommation pour le scénario {st.session_state.scenario_prod} : **{flexinillite_conso[st.session_state.scenario_prod]} GW**")
+
+            st.write("##### 🔋 Batteries")
+            st.write(f"Energie injectée sur le réseau : **{parc_batterie_prod} TWh**")
+
+            st.write(cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis)
 
         col1, col2 = st.columns([7, 1])
         with col2 :
@@ -1940,3 +1953,38 @@ if st.session_state.button_clicked:
                 st.session_state.button_clicked = False
                 st.rerun()
     
+# Vos données
+data_batteries = {
+    "intervalle": ["[100% : 80%[", "[80% : 60%[", "[60% : 40%[", "[40% : 20%[", "[20% : 0%["],
+    "Charge": [cycle100, cycle80, cycle60, cycle40, cycle20],
+    "Décharge": [cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis],
+}
+
+# Créer un DataFrame
+df = pd.DataFrame(data_batteries)
+
+# Positions pour les barres
+x = np.arange(len(df["intervalle"]))  # Position des groupes
+width = 0.4  # Largeur des barres
+
+# Création du graphique avec Matplotlib
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Barres de Charge
+ax.bar(x - width / 2, df["Charge"], width, label="Charge", color='blue')
+# Barres de Décharge
+ax.bar(x + width / 2, df["Décharge"], width, label="Décharge", color='orange')
+
+# Paramétrage des labels
+ax.set_xlabel("Intervalle", fontsize=12)
+ax.set_ylabel("Nombre de cycles", fontsize=12)
+ax.set_title("Nombre de cycles réalisés par le parc de batteries\n(en pourcentage d'un cycle complet)", fontsize=14)
+ax.set_xticks(x)
+ax.set_xticklabels(df["intervalle"], fontsize=10)
+ax.legend()
+
+# Ajustement des marges
+plt.tight_layout()
+
+# Afficher dans Streamlit
+st.pyplot(fig)
