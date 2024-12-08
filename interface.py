@@ -60,8 +60,8 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     prix_tonne_CO2 = 100
 
     #Données scénario
-    df_scenario = pd.read_csv('data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
-    df_historique = pd.read_csv('data\data_historique.csv', sep=';', header=0)
+    df_scenario = pd.read_csv(r'data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
+    df_historique = pd.read_csv(r'data\data_historique.csv', sep=';', header=0)
     df_bdd_systeme = pd.read_csv(r'data\bdd_systeme.csv', sep=';', header=0, nrows=8760, usecols=range(8))
     df_bdd_ventoff = pd.read_csv(r'data\bdd_ventoff.csv', sep=';', header=0)
 
@@ -238,7 +238,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     #Parc de batteries
     maxbat = float(df_scenario["Parc installé (GW)"][df_scenario["Filière"] == "batteries"].iloc[0]) * 1000 #Capacité des batterie en MWh
     minbat = 0
-    rampbat = 100 / 100
+    rampbat = 1
     bat_stock = minbat
     previous_bat = minbat
 
@@ -1460,7 +1460,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     df_scenario_simule['batterie charge'] = bat_charge
     df_scenario_simule['pertes'] = pertes
     df_scenario_simule['variation nécessaire'] = variation_need_list
-    df_scenario_simule['stock batteries'] =  col39
+    df_scenario_simule['stock batteries'] =  [pourcentage_charge * int(maxbat) for pourcentage_charge in col39]
 
     df_scenario_simule['date_heure'] = date_heure
 
@@ -1629,7 +1629,7 @@ with st.sidebar:
 
 
 
-df_scenario = pd.read_csv('data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
+df_scenario = pd.read_csv(r'data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
 df_scenario['Bilan électrique (TWh)'] = df_scenario['Bilan électrique (TWh)'].astype('float32')
 df_scenario['Parc installé (GW)'] = df_scenario['Parc installé (GW)'].astype('float32')
 df_scenario['FC (%)'] = df_scenario['FC (%)'].astype('float32')
@@ -1884,13 +1884,13 @@ if st.session_state.button_clicked:
         else:
             st.warning("Veuillez sélectionner au moins un élément à tracer.")
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3, col4 = st.columns([1, 10, 10, 1])
 
-        with col1 : 
+        with col2 : 
             st.write("##### Production après ajustement")
             st.dataframe(df_simulateur, hide_index=True, height=562)
 
-        with col2 : 
+        with col3 : 
             st.write("##### Déséquilibres du système")
 
             data_desequilibre = {
@@ -1902,7 +1902,7 @@ if st.session_state.button_clicked:
             df_desequilibre = pd.DataFrame(data_desequilibre)
 
             st.dataframe(df_desequilibre.iloc[:2], hide_index=True)
-            st.write(f"effacement potentiel avec ordre : {st.session_state.ordre_effacement_EnR}")
+            st.write(f"effacement potentiel des énergies renouvables dans l'ordre suivant : {st.session_state.ordre_effacement_EnR}")
             st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True)
 
             st.write(parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis)
