@@ -68,7 +68,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     prix_tonne_CO2 = 100
 
     #Données scénario
-    df_scenario = pd.read_csv('data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
+    df_scenario = pd.read_csv(r'main/data_new/scenarios_RTE_Prod.csv', sep=';', header=0)
     df_historique = pd.read_csv(r'data\data_historique.csv', sep=';', header=0)
     df_bdd_systeme = pd.read_csv(r'data\bdd_systeme.csv', sep=';', header=0, nrows=8760, usecols=range(8))
     df_bdd_ventoff = pd.read_csv(r'data\bdd_ventoff.csv', sep=';', header=0)
