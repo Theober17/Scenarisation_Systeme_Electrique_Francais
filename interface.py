@@ -44,7 +44,7 @@ def ajuster_flexibilite(conso_horaire, flex_gwh=15):
     
     return conso_modifiee
 
-def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nucbase, FC_min_nucbase, ramp_coal, FC_min_coal, ramp_gasCC, FC_min_gasCC, ramp_nucflex, FC_min_nucflex, ramp_fuel, FC_min_fuel, ramp_import, ramp_export):
+def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, ramp_nucbase, FC_min_nucbase, ramp_coal, FC_min_coal, ramp_gasCC, FC_min_gasCC, ramp_nucflex, FC_min_nucflex, ramp_fuel, FC_min_fuel, ramp_import, ramp_export):
 
     #Consommation en fonction du scénario
     scenarios_conso = {"réindustrialisation" : 752,
@@ -58,9 +58,6 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nu
     perte = 7 / 100
 
     prix_tonne_CO2 = 100
-
-    #Ordre d'effacement es EnR
-    ordre = 2 
 
     #Données scénario
     df_scenario = pd.read_csv('data_new\scenarios_RTE_Prod.csv', sep=';', header=0)
@@ -1130,7 +1127,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nu
             if (ordre == 1) :
                 tech1[tranche_horaire] = PV_horaire.iloc[tranche_horaire]
                 tech2[tranche_horaire] = windon_horaire.iloc[tranche_horaire]
-                tech3[tranche_horaire] = windoffT.iloc[tranche_horaire]
+                tech3[tranche_horaire] = windoffT[tranche_horaire]
             else :
                 if (ordre == 2) :
                     tech1[tranche_horaire] = windon_horaire.iloc[tranche_horaire]
@@ -1138,7 +1135,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nu
                     tech3[tranche_horaire] = PV_horaire.iloc[tranche_horaire]
                 else :
                     if (ordre == 3) :
-                        tech1[tranche_horaire] = windoffT.iloc[tranche_horaire]
+                        tech1[tranche_horaire] = windoffT[tranche_horaire]
                         tech2[tranche_horaire] = windon_horaire.iloc[tranche_horaire]
                         tech3[tranche_horaire] = PV_horaire.iloc[tranche_horaire]
                     else :
@@ -1315,9 +1312,9 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nu
                         'éolien onshore' : round(sum(windon_curtailment) / 1000000, 2),
                         'éolien offshore' : round(sum(windoff_curtailment) / 1000000, 2),
                         
-                        'part_prod_solaire' : round(sum(PV_curtailment) / sum(PV_horaire), 3),
-                        'part_prod_eolineon' : round(sum(windon_curtailment) / sum(windon_horaire), 3),
-                        'part_prod_eolienoff' : round(sum(windoff_curtailment) / (prodwindoffT * 1000000), 3)
+                        'part_prod_solaire' : round(sum(PV_curtailment) / sum(PV_horaire), 3) * 100,
+                        'part_prod_eolienon' : round(sum(windon_curtailment) / sum(windon_horaire), 3) * 100,
+                        'part_prod_eolienoff' : round(sum(windoff_curtailment) / (prodwindoffT * 1000000), 3) * 100
                         }
     effacement_potentiel = {key: round(float(value), 2) for key, value in effacement_potentiel.items()}
 
@@ -1456,8 +1453,8 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ramp_nu
     df_scenario_simule['thermique charge'] = storage_charge_th
 
     df_scenario_simule['effacement potentiel PV'] = PV_curtailment
-    df_scenario_simule['effacement potentiel eolien onshore'] = windon_curtailment
-    df_scenario_simule['effacemet potentiel eolien offshore'] = windoff_curtailment
+    df_scenario_simule['effacement potentiel éolien onshore'] = windon_curtailment
+    df_scenario_simule['effacemet potentiel éolien offshore'] = windoff_curtailment
 
     df_scenario_simule['batterie décharge'] = bat_discharge
     df_scenario_simule['batterie charge'] = bat_charge
@@ -1599,7 +1596,7 @@ with st.sidebar:
 
 
     # Ordre d'effacement des EnR
-    ordre_effacement_EnR = st.selectbox(
+    st.session_state.ordre_effacement_EnR = st.selectbox(
         "Ordre d'effacement des EnR",
         ("PV - éolien onshore - éolien offshore", 
          "éolien onshore - éolien offshore - PV", 
@@ -1607,6 +1604,12 @@ with st.sidebar:
          "PV - éolien offshore - éolien onshore",
          "au prorata de la production")
     )
+
+    ordre_str_to_int = {"PV - éolien onshore - éolien offshore" : 1, 
+         "éolien onshore - éolien offshore - PV" : 2, 
+         "éolien offshore - éolien onshore - PV" : 3,
+         "PV - éolien offshore - éolien onshore" : 4,
+         "au prorata de la production" : 5}
 
     st.header("Ressources :")
 
@@ -1816,67 +1819,97 @@ if   st.session_state.button_clicked == False :
     if st.button("Lancer le simulateur", use_container_width=True):
         st.session_state.button_clicked = True  # Stocker l'état du clic
 
+
 if st.session_state.button_clicked:
 
-    df_simulateur, df_scenario_simule, effacement_potentiel, desequilibre, parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis = simulateur_systeme_electrique_francais(st.session_state.scenario_prod, st.session_state.scenario_conso, st.session_state.ramp_nucbase, st.session_state.FC_min_nucbase, st.session_state.ramp_coal, st.session_state.FC_min_coal, st.session_state.ramp_gasCC, st.session_state.FC_min_gasCC, st.session_state.ramp_nucflex, st.session_state.FC_min_nucflex, st.session_state.ramp_fuel, st.session_state.FC_min_fuel, st.session_state.ramp_import, st.session_state.ramp_export)
 
-    df_results = df_scenario_simule.fillna('')
+    # Utiliser HTML pour le titre
+    with st.expander('⚡', expanded=True):
+        st.write("### Résultats de simulation")
+        st.write(" ")
 
-    # Conversion des colonnes en type datetime
-    df_results['date_heure'] = pd.to_datetime(df_results['date_heure'], format='%Y-%m-%d-%H', errors='coerce')
-    df_results['date_heure'] = df_results['date_heure'].apply(lambda x: x.replace(year=2050) if pd.notnull(x) else x)
+        df_simulateur, df_scenario_simule, effacement_potentiel, desequilibre, parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis = simulateur_systeme_electrique_francais(st.session_state.scenario_prod, st.session_state.scenario_conso, ordre_str_to_int[st.session_state.ordre_effacement_EnR], st.session_state.ramp_nucbase, st.session_state.FC_min_nucbase, st.session_state.ramp_coal, st.session_state.FC_min_coal, st.session_state.ramp_gasCC, st.session_state.FC_min_gasCC, st.session_state.ramp_nucflex, st.session_state.FC_min_nucflex, st.session_state.ramp_fuel, st.session_state.FC_min_fuel, st.session_state.ramp_import, st.session_state.ramp_export)
 
-    df_results['date'] = pd.to_datetime(df_results['date'], format='%Y-%m-%d', errors='coerce')
-    # Définir la colonne 'date_heure' comme index
-    df_results = df_results.set_index('date_heure')
+        df_results = df_scenario_simule.fillna('')
+
+        # Conversion des colonnes en type datetime
+        df_results['date_heure'] = pd.to_datetime(df_results['date_heure'], format='%Y-%m-%d-%H', errors='coerce')
+        df_results['date_heure'] = df_results['date_heure'].apply(lambda x: x.replace(year=2050) if pd.notnull(x) else x)
+
+        df_results['date'] = pd.to_datetime(df_results['date'], format='%Y-%m-%d', errors='coerce')
+        # Définir la colonne 'date_heure' comme index
+        df_results = df_results.set_index('date_heure')
 
 
 
 
-    # Interface utilisateur avec Streamlit
-    col1, col2 = st.columns([3, 2])
+        # Interface utilisateur avec Streamlit
+        col1, col2 = st.columns([3, 2])
 
-    with col1:
-        # Multiselect pour choisir les colonnes
-        colonnes_a_tracer = st.multiselect(
-            "Choisissez les colonnes que vous voulez tracer :",
-            options=df_results.columns[2:],
-            default=[df_results.columns[3]]  # Par défaut, une seule colonne est sélectionnée
-        )
+        with col1:
+            # Multiselect pour choisir les colonnes
+            colonnes_a_tracer = st.multiselect(
+                "Choisissez les colonnes que vous voulez tracer :",
+                options=df_results.columns[2:],
+                default=[df_results.columns[3]]  # Par défaut, une seule colonne est sélectionnée
+            )
 
-    with col2:
-        col1, col2, col3 = st.columns(3)
+        with col2:
+            col1, col2, col3 = st.columns(3)
 
-        min_date = df_results.index.min().date()  # Date minimale du dataframe
-        max_date = df_results.index.max().date()  # Date maximale du dataframe
+            min_date = df_results.index.min().date()  # Date minimale du dataframe
+            max_date = df_results.index.max().date()  # Date maximale du dataframe
+
+            with col1 : 
+                date_debut = st.date_input("Date de début :", value=min_date, min_value=min_date, max_value=max_date, key=f"date_debut_{st.session_state.date_min_key}")
+            with col2 :
+                date_fin = st.date_input("Date de fin :", value=max_date, min_value=min_date, max_value=max_date, key=f"date_fin_{st.session_state.date_max_key}")
+            with col3:
+                st.write("") 
+                st.button("Toutes les données", use_container_width = True, on_click=update_key2)
+                
+
+        # Vérification que l'utilisateur a sélectionné des colonnes
+        if colonnes_a_tracer:
+            # Filtrer le dataframe pour les colonnes sélectionnées et la plage de dates
+            df_filtre = df_results[colonnes_a_tracer]
+            df_filtre = df_filtre.loc[date_debut:date_fin]  # Filtrer par date
+
+            if not df_filtre.empty:
+                # Affichage du graphique
+                st.line_chart(df_filtre, y_label="Energie en MWh")
+
+            else:
+                st.warning("Aucune donnée disponible pour la plage de dates sélectionnée.")
+        else:
+            st.warning("Veuillez sélectionner au moins un élément à tracer.")
+
+        col1, col2 = st.columns(2)
 
         with col1 : 
-            date_debut = st.date_input("Date de début :", value=min_date, min_value=min_date, max_value=max_date, key=f"date_debut_{st.session_state.date_min_key}")
+            st.write("##### Production après ajustement")
+            st.dataframe(df_simulateur, hide_index=True, height=562)
+
+        with col2 : 
+            st.write("##### Déséquilibres du système")
+
+            data_desequilibre = {
+                " ": ["excès d'offre", "manque d'offre", "PV", "éolien onshore", "éolien offshore"],
+                "volume (TWh)": [desequilibre['exces_offre'], desequilibre["manque d'offre"], effacement_potentiel['solaire'], effacement_potentiel['éolien onshore'], effacement_potentiel['éolien offshore'],],
+                "part de la production (%)": [desequilibre['part_prod_exces'], desequilibre['part_prod_manque'], effacement_potentiel['part_prod_solaire'], effacement_potentiel['part_prod_eolienon'], effacement_potentiel['part_prod_eolienoff']],
+                "fréquence annuelle (heures)": [desequilibre['frq_annuelle_exces'], desequilibre['frq_annuelle_manque'], '', '', '']
+            }
+            df_desequilibre = pd.DataFrame(data_desequilibre)
+
+            st.dataframe(df_desequilibre.iloc[:2], hide_index=True)
+            st.write(f"effacement potentiel avec ordre : {st.session_state.ordre_effacement_EnR}")
+            st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True)
+
+            st.write(parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis)
+
+        col1, col2 = st.columns([7, 1])
         with col2 :
-            date_fin = st.date_input("Date de fin :", value=max_date, min_value=min_date, max_value=max_date, key=f"date_fin_{st.session_state.date_max_key}")
-        with col3:
-            st.write("") 
-            st.button("Toutes les données", use_container_width = True, on_click=update_key2)
-            
-
-    # Vérification que l'utilisateur a sélectionné des colonnes
-    if colonnes_a_tracer:
-        # Filtrer le dataframe pour les colonnes sélectionnées et la plage de dates
-        df_filtre = df_results[colonnes_a_tracer]
-        df_filtre = df_filtre.loc[date_debut:date_fin]  # Filtrer par date
-
-        if not df_filtre.empty:
-            # Affichage du graphique
-            st.line_chart(df_filtre, y_label="Energie en MWh")
-
-        else:
-            st.warning("Aucune donnée disponible pour la plage de dates sélectionnée.")
-    else:
-        st.warning("Veuillez sélectionner au moins un élément à tracer.")
-
-    col1, col2 = st.columns([7, 1])
-    with col2 :
-        if st.button("Terminer", use_container_width=True):
-            st.session_state.button_clicked = False
-            st.rerun()
+            if st.button("Terminer", use_container_width=True):
+                st.session_state.button_clicked = False
+                st.rerun()
     
