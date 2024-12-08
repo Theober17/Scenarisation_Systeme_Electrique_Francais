@@ -1581,12 +1581,12 @@ st.markdown("""
 # Titre de la page
 st.markdown('<div class="title"> Simulation du système électrique français </div>', unsafe_allow_html=True)
 
-'''
-HORIZONTAL_RED = "image2.png"
+
+HORIZONTAL_RED = "Image2.png"
 logo = "image.png"
 
 st.logo(HORIZONTAL_RED, icon_image=logo)
-'''
+
 
 flexinillite_conso = {"M0" : 15,
      "M1" : 17,
