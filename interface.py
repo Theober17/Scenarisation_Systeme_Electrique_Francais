@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-def ajuster_flexibilite(conso_horaire, flex_gwh=15):
+def ajuster_flexibilite(conso_horaire, flex_gwh):
     # Conversion de la flexibilité en MWh
     flex_mwh = flex_gwh * 1000
     
@@ -45,6 +45,14 @@ def ajuster_flexibilite(conso_horaire, flex_gwh=15):
     return conso_modifiee
 
 def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, ramp_nucbase, FC_min_nucbase, ramp_coal, FC_min_coal, ramp_gasCC, FC_min_gasCC, ramp_nucflex, FC_min_nucflex, ramp_fuel, FC_min_fuel, ramp_import, ramp_export):
+
+    flexinillite_conso = {"M0" : 15,
+     "M1" : 17,
+     "M23" : 15,
+     "N1" : 15,
+     "N2" : 15,
+     "N03" : 13
+     }
 
     #Consommation en fonction du scénario
     scenarios_conso = {"réindustrialisation" : 752,
@@ -90,7 +98,8 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
 
     conso_annuelle = scenarios_conso[scenario_cons] * 1000000 #TWh en MWh
     conso_horaire = df_bdd_systeme['consommation'] * conso_annuelle
-    conso_horaire_flex = ajuster_flexibilite(list(conso_horaire))
+
+    conso_horaire_flex = ajuster_flexibilite(list(conso_horaire), flexinillite_conso[scenario_prod])
 
     hydro_horaire = df_bdd_systeme['hydraulique'] * (1 + ec_FChydro) * Khydro
 
@@ -1289,6 +1298,23 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                                             prod[12] *  1000000 / (max_discharge * 8760),
                                             None,
                                             None]
+    elif KgasCC == 0 :
+        df_simulateur['taux_utilisation'] = [prod[0] * 1000000 / (Knucbase * 8760),
+                                            prod[1] * 1000000 / (Knucflex * 8760),
+                                            0,
+                                            taux_utilisation_charbon,
+                                            taux_utilisation_petrole,
+                                            prod[5] *  1000000 / (Kbiomas * 8760),
+                                            prod[6] *  1000000 / (Khydro * 8760),
+                                            prod[7] *  1000000 / (Kwindon * 8760),
+                                            prod[8] *  1000000 / (KPV * 8760),
+                                            prod[9] *  1000000 / (Kimport * 8760),
+                                            prod[10] *  1000000 / (Kexport * 8760),
+                                            prod[11] *  1000000 / (max_charge * 8760),
+                                            prod[12] *  1000000 / (max_discharge * 8760),
+                                            None,
+                                            None]
+
     else :
         df_simulateur['taux_utilisation'] = [prod[0] * 1000000 / (Knucbase * 8760),
                                             prod[1] * 1000000 / (Knucflex * 8760),
@@ -1410,7 +1436,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                 
                 cycle_discharge = 0
 
-    df_scenario_simule = pd.DataFrame(columns=['date_heure', 'date', 'heure', 'effacement', 'total éolien offshore', 'consommation', 'nucléaire base', 'nucléaire flexible', 'hydraulique', 'PV', 'éolien onshore', 'bioénergies', 'charbon', 'gaz', 'pétrole', 'importations', 'exportations', 'soldes échanges', 'STEP décharge', 'STEP charge', 'thermique décharge', 'thermique charge', 'effacement potentiel PV', 'effacement potentiel éolien onshore', 'effacemet potentiel éolien offshore', 'batterie décharge', 'batterie charge', 'pertes', 'variation nécessaire', 'stock batteries'])
+    df_scenario_simule = pd.DataFrame(columns=['date_heure', 'date', 'heure', 'effacement', 'total éolien offshore', 'consommation', 'consommation avec flexibilité', 'nucléaire base', 'nucléaire flexible', 'hydraulique', 'PV', 'éolien onshore', 'bioénergies', 'charbon', 'gaz', 'pétrole', 'importations', 'exportations', 'soldes échanges', 'STEP décharge', 'STEP charge', 'thermique décharge', 'thermique charge', 'effacement potentiel PV', 'effacement potentiel éolien onshore', 'effacemet potentiel éolien offshore', 'batterie décharge', 'batterie charge', 'pertes', 'variation nécessaire', 'stock batteries'])
 
     dates = pd.date_range(start='2023-01-01', end='2023-12-31', freq='D')
 
@@ -1435,6 +1461,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     df_scenario_simule['effacement'] = effacement
     df_scenario_simule['total éolien offshore'] = windoffT
     df_scenario_simule['consommation'] = conso_horaire
+    df_scenario_simule['consommation avec flexibilité'] = conso_horaire_flex
     df_scenario_simule['nucléaire base'] = [x * (1 + perte) for x in nucbase]
     df_scenario_simule['nucléaire flexible'] = [x * (1 + perte) for x in nucflex]
     df_scenario_simule['hydraulique'] = hydro_horaire
