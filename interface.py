@@ -1663,7 +1663,7 @@ with st.sidebar:
 
 
 
-df_scenario = pd.read_csv(r'main/data_new/scenarios_RTE_Prod.csv', sep=';', header=0)
+df_scenario = pd.read_csv(r'Scenarisation_Systeme_Electrique_Francais/blob/main/data_new/scenarios_RTE_Prod.csv', sep=';', header=0)
 df_scenario['Bilan électrique (TWh)'] = df_scenario['Bilan électrique (TWh)'].astype('float32')
 df_scenario['Parc installé (GW)'] = df_scenario['Parc installé (GW)'].astype('float32')
 df_scenario['FC (%)'] = df_scenario['FC (%)'].astype('float32')
