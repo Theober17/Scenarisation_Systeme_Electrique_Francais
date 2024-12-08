@@ -1330,7 +1330,9 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ):
 
     parc_batterie_prod = round(sum(bat_discharge) / 1000000, 2)
 
-    col40 = []
+    col40= [0] * 8760
+    cycle = [0]*8760
+
     cycle_discharge = 0
     cycle_charge = 0
     nbcycles = 0
@@ -1346,17 +1348,15 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ):
     for i in range(8760) :
         if i == 0 :
             cycles[i] = 0
-            col40.append(cycles[i])
+            col40[i] = cycles[i]
         else :
             cycles[i] = stocks[i] - stocks[i-1]
-            col40.append(cycles[i])
-
-    cycle = [0]*8760
+            col40[i] = cycles[i]
 
     cycle[0] = True
     n = 1
     for i in range(1, 8760):
-        if cycle[i - 1] :
+        if cycle[i - 1] == True :
             if cycles[i] < 0 :
                 cycle[i] = False
             else :
@@ -1368,12 +1368,12 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ):
                 cycle[i] = False
 
     for i in range(8759) :
-        if cycle[i] :
-            if cycle[i + 1] :
-                cycle_charge = cycle_charge + cycles[i]
+        if cycle[i] == True :
+            if cycle[i + 1] == True :
+                cycle_charge +=  cycles[i]
             else :
-                cycle_charge += + cycles[i]
-                nbcycles = nbcycles + cycle_charge
+                cycle_charge += cycles[i]
+                nbcycles += cycle_charge
                 if cycle_charge > 0.8 :
                     cycle100 = cycle100 + 1
                 else :
@@ -1389,11 +1389,11 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ):
                                 cycle20 = cycle20 + 1
                 
                 cycle_charge = 0
-
-            if not cycle[i + 1] :
-                cycle_discharge = cycle_discharge + cycles[i]
+        else :
+            if cycle[i + 1] == False :
+                cycle_discharge += cycles[i]
             else :
-                cycle_discharge = cycle_discharge + cycles[i]
+                cycle_discharge += cycles[i]
                 nbcycles -= cycle_discharge
 
                 if cycle_discharge < -0.8 :

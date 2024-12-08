@@ -1354,7 +1354,7 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
 
     parc_batterie_prod = round(sum(bat_discharge) / 1000000, 2)
 
-    col40=[]
+    cycle = [0]*8760
     cycle_discharge = 0
     cycle_charge = 0
     nbcycles = 0
@@ -1370,17 +1370,13 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
     for i in range(8760) :
         if i == 0 :
             cycles[i] = 0
-            col40.append(cycles[i])
         else :
             cycles[i] = stocks[i] - stocks[i-1]
-            col40.append(cycles[i])
-
-    cycle = [0]*8760
 
     cycle[0] = True
     n = 1
     for i in range(1, 8760):
-        if cycle[i - 1] == True:
+        if cycle[i - 1] == True :
             if cycles[i] < 0 :
                 cycle[i] = False
             else :
@@ -1392,12 +1388,12 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                 cycle[i] = False
 
     for i in range(8759) :
-        if cycle[i] == True:
-            if cycle[i + 1] == True:
-                cycle_charge = cycle_charge + cycles[i]
+        if cycle[i] == True :
+            if cycle[i + 1] == True :
+                cycle_charge +=  cycles[i]
             else :
-                cycle_charge += + cycles[i]
-                nbcycles = nbcycles + cycle_charge
+                cycle_charge += cycles[i]
+                nbcycles += cycle_charge
                 if cycle_charge > 0.8 :
                     cycle100 = cycle100 + 1
                 else :
@@ -1413,11 +1409,11 @@ def simulateur_systeme_electrique_francais(scenario_prod, scenario_cons, ordre, 
                                 cycle20 = cycle20 + 1
                 
                 cycle_charge = 0
-
+        else :
             if cycle[i + 1] == False :
-                cycle_discharge = cycle_discharge + cycles[i]
+                cycle_discharge += cycles[i]
             else :
-                cycle_discharge = cycle_discharge + cycles[i]
+                cycle_discharge += cycles[i]
                 nbcycles -= cycle_discharge
 
                 if cycle_discharge < -0.8 :
@@ -1561,6 +1557,7 @@ st.session_state.perte = 7 / 100
 
 # Configuration de la page
 st.set_page_config(page_title="Simulation du système électrique français", layout="wide")
+
 
 # Application du style CSS pour personnaliser l'apparence
 st.markdown("""
@@ -1859,10 +1856,11 @@ if st.session_state.button_clicked:
 
 
     # Utiliser HTML pour le titre
-    with st.expander('⚡', expanded=True):
-        st.write("### Résultats de simulation")
+    with st.expander('⚡ Résultats de simulation', expanded=True):
+
         st.write(" ")
 
+        st.write("##### Graphiques")
         df_simulateur, df_scenario_simule, effacement_potentiel, desequilibre, parc_batterie_prod, cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis = simulateur_systeme_electrique_francais(st.session_state.scenario_prod, st.session_state.scenario_conso, ordre_str_to_int[st.session_state.ordre_effacement_EnR], st.session_state.ramp_nucbase, st.session_state.FC_min_nucbase, st.session_state.ramp_coal, st.session_state.FC_min_coal, st.session_state.ramp_gasCC, st.session_state.FC_min_gasCC, st.session_state.ramp_nucflex, st.session_state.FC_min_nucflex, st.session_state.ramp_fuel, st.session_state.FC_min_fuel, st.session_state.ramp_import, st.session_state.ramp_export)
 
         df_results = df_scenario_simule.fillna('')
@@ -1919,11 +1917,11 @@ if st.session_state.button_clicked:
         else:
             st.warning("Veuillez sélectionner au moins un élément à tracer.")
 
-        col1, col2, col3, col4 = st.columns([1, 10, 10, 1])
+        col1, col2, col5, col3, col4 = st.columns([1, 5, 2, 6, 1])
 
         with col2 : 
             st.write("##### Production après ajustement")
-            st.dataframe(df_simulateur, hide_index=True, height=562)
+            st.dataframe(df_simulateur, hide_index=True, height=562, use_container_width=True)
 
         with col3 : 
             st.write("##### Déséquilibres du système")
@@ -1934,6 +1932,7 @@ if st.session_state.button_clicked:
                 "part de la production (%)": [desequilibre['part_prod_exces'], desequilibre['part_prod_manque'], effacement_potentiel['part_prod_solaire'], effacement_potentiel['part_prod_eolienon'], effacement_potentiel['part_prod_eolienoff']],
                 "fréquence annuelle (heures)": [desequilibre['frq_annuelle_exces'], desequilibre['frq_annuelle_manque'], '', '', '']
             }
+
             df_desequilibre = pd.DataFrame(data_desequilibre)
 
             st.dataframe(df_desequilibre.iloc[:2], hide_index=True)
@@ -1941,11 +1940,46 @@ if st.session_state.button_clicked:
             st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True)
 
             st.write(f"Flexibilité de la consommation pour le scénario {st.session_state.scenario_prod} : **{flexinillite_conso[st.session_state.scenario_prod]} GW**")
-
+        
             st.write("##### 🔋 Batteries")
             st.write(f"Energie injectée sur le réseau : **{parc_batterie_prod} TWh**")
 
-            st.write(cycle100, cycle80, cycle60, cycle40, cycle20, cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis)
+            # Vos données
+            data_batteries = {
+                "intervalle": ["[100% : 80%[", "[80% : 60%[", "[60% : 40%[", "[40% : 20%[", "[20% : 0%["],
+                "Charge": [cycle100, cycle80, cycle60, cycle40, cycle20],
+                "Décharge": [cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis],
+            }
+
+            # Créer un DataFrame
+            df = pd.DataFrame(data_batteries)
+            
+            # Positions pour les barres
+            x = np.arange(len(df["intervalle"]))  # Position des groupes
+            width = 0.4  # Largeur des barres
+
+            # Création du graphique avec Matplotlib
+            fig, ax = plt.subplots(figsize=(8, 5))
+
+            # Barres de Charge
+            ax.bar(x - width / 2, df["Charge"], width, label="Charge", color='blue')
+            # Barres de Décharge
+            ax.bar(x + width / 2, df["Décharge"], width, label="Décharge", color='orange')
+
+            # Paramétrage des labels
+            ax.set_xlabel("Intervalle", fontsize=12)
+            ax.set_ylabel("Nombre de cycles", fontsize=12)
+            ax.set_title("Nombre de cycles réalisés par le parc de batteries\n(en pourcentage d'un cycle complet)", fontsize=14)
+            ax.set_xticks(x)
+            ax.set_xticklabels(df["intervalle"], fontsize=10)
+            ax.legend()
+
+            # Ajustement des marges
+            plt.tight_layout()
+
+            # Afficher dans Streamlit
+            with st.popover("Histogramme des cycles batteries"):
+                st.pyplot(fig)
 
         col1, col2 = st.columns([7, 1])
         with col2 :
@@ -1953,38 +1987,3 @@ if st.session_state.button_clicked:
                 st.session_state.button_clicked = False
                 st.rerun()
     
-# Vos données
-data_batteries = {
-    "intervalle": ["[100% : 80%[", "[80% : 60%[", "[60% : 40%[", "[40% : 20%[", "[20% : 0%["],
-    "Charge": [cycle100, cycle80, cycle60, cycle40, cycle20],
-    "Décharge": [cycle100bis, cycle80bis, cycle60bis, cycle40bis, cycle20bis],
-}
-
-# Créer un DataFrame
-df = pd.DataFrame(data_batteries)
-
-# Positions pour les barres
-x = np.arange(len(df["intervalle"]))  # Position des groupes
-width = 0.4  # Largeur des barres
-
-# Création du graphique avec Matplotlib
-fig, ax = plt.subplots(figsize=(8, 5))
-
-# Barres de Charge
-ax.bar(x - width / 2, df["Charge"], width, label="Charge", color='blue')
-# Barres de Décharge
-ax.bar(x + width / 2, df["Décharge"], width, label="Décharge", color='orange')
-
-# Paramétrage des labels
-ax.set_xlabel("Intervalle", fontsize=12)
-ax.set_ylabel("Nombre de cycles", fontsize=12)
-ax.set_title("Nombre de cycles réalisés par le parc de batteries\n(en pourcentage d'un cycle complet)", fontsize=14)
-ax.set_xticks(x)
-ax.set_xticklabels(df["intervalle"], fontsize=10)
-ax.legend()
-
-# Ajustement des marges
-plt.tight_layout()
-
-# Afficher dans Streamlit
-st.pyplot(fig)
