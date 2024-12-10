@@ -26,7 +26,7 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 ![plot](README_Pic/Nav_1.png)
 
 **2.** Lancer le simulateur
-![plot](README_Pic/Nav_2.png)
+<img src="README_Pic/Nav_2.png" alt="plot" width="500">
 
 **3.** Analyser les résultats de la simulation
 
