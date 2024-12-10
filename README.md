@@ -22,13 +22,17 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 - Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
 
 ## Navigation
+
 **1 .** Sélectionner un scénario de production et un scénario de consommation
+
 <img src="README_Pic/Nav_1.png" alt="plot" width="900">
 
 **2.** Lancer le simulateur
+
 <img src="README_Pic/Nav_2.png" alt="plot" width="900">
 
 **3.** Analyser les résultats de la simulation
+
 <img src="README_Pic/Nav_3.png" alt="plot" width="900">
 
 ## Principales hypothèses
