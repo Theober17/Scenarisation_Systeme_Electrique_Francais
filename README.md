@@ -10,10 +10,10 @@ Le projet s'appuie sur les travaux de Madame LOISEL et Monsieur PINDER réalisé
 
 ## Définitions
 - Ramping : Capacité d'une installation à faire varier sa production :
-- Pmax/min(t=h) = +/- Ramping * P(t=h-1)
+  - Pmax/min(t=h) = +/- Ramping * P(t=h-1)
 - Effacement : Excès ou défaut d'énergie non compensable.
-- Effacement positif : défaut de production.
-- Effacement négatif : surproduction.
+  - Effacement positif : défaut de production.
+  - Effacement négatif : surproduction.
 - Soldes échanges : Différence entre exportations et importations :
 SE(t=h) = exportations(t=h) - importations(t=h)
 - Variation nécessaire : Demande de variation de production aux usines pilotables.
