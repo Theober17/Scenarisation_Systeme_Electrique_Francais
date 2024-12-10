@@ -33,17 +33,17 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 ![Alt text](README_Pic/Nav_3.png)
 
 ## Principales hypothèses
-Nucléaire : 66% en base, 33% flexible.
-Disponibilité annuelle :
-Décembre-Mars : 91%
-Mars-Mai : 80%
-Mai-Novembre : 67%
-Novembre-Décembre : 80%
-Ancien thermique : 80% gaz, 20% pétrole.
-Facteur de capacité : gaz ≈ 30%, pétrole ≈ 10%.
-Capacité d'export : 1.4 * capacité d'import.
-Facteur de capacité STEP : ≈ 20%.
-Pertes réseau : 7%.
+- Nucléaire : 66% en base, 33% flexible.
+- Disponibilité annuelle :
+  - Décembre-Mars : 91%
+  - Mars-Mai : 80%
+  - Mai-Novembre : 67%
+  - Novembre-Décembre : 80%
+- Ancien thermique : 80% gaz, 20% pétrole.
+- Facteur de capacité : gaz ≈ 30%, pétrole ≈ 10%.
+- Capacité d'export : 1.4 * capacité d'import.
+- Facteur de capacité STEP : ≈ 20%.
+- Pertes réseau : 7%.
 
 ## Description
 Le simulateur modélise le dispatching des générateurs programmables et intermittents au pas horaire sur une année. Il reproduit le fonctionnement du marché d'électricité selon l'ordre de mérite des coûts marginaux de production.
