@@ -23,14 +23,13 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 
 ## Navigation
 **1 .** Sélectionner un scénario de production et un scénario de consommation
-![plot](README_Pic/Nav_1.png)
+<img src="README_Pic/Nav_1.png" alt="plot" width="800">
 
 **2.** Lancer le simulateur
-<img src="README_Pic/Nav_2.png" alt="plot" width="500">
+<img src="README_Pic/Nav_2.png" alt="plot" width="800">
 
 **3.** Analyser les résultats de la simulation
-
-!(README_Pic/Nav_3.png)
+<img src="README_Pic/Nav_3.png" alt="plot" width="800">
 
 ## Principales hypothèses
 - Nucléaire : 66% en base, 33% flexible.
