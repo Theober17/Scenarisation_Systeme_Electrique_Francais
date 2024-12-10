@@ -1647,7 +1647,7 @@ with st.sidebar:
 
 
 
-    URL_STRING = "https://github.com/Theober17/Simulateur_Systeme_Electrique_Francais/blob/main/README.md"
+    URL_STRING = "https://github.com/Theober17/Simulateur_Systeme_Electrique_Francais_Doc/blob/main/README.md"
 
     st.markdown(
         f'<a href="{URL_STRING}" style="display: inline-block; padding: 6px 10px; background-color: #00A6D9; color: white; text-align: center; text-decoration: none; border-radius: 7px;">ReadMe</a>',
