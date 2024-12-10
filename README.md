@@ -63,5 +63,5 @@ Manques d'offre ponctuels.
 Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
 
 ## Documentation
-RTE - Futurs énergétiques 2050
-Projet WEAMEC « EMA »
+- RTE [Futurs énergétiques 2050](https://www.rte-france.com/analyses-tendances-et-prospectives/bilan-previsionnel-2050-futurs-energetiques)
+- Projet WEAMEC « EMA » : [Lien du projet](https://www.weamec.fr/moyens-logiciels/simulateur-ssef/)
