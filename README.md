@@ -30,7 +30,7 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 
 3. Analyser les résultats de la simulation
 
-![Alt text](README_Pic/Nav_3.png)
+!(README_Pic/Nav_3.png)
 
 ## Principales hypothèses
 - Nucléaire : 66% en base, 33% flexible.
