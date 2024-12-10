@@ -1645,21 +1645,15 @@ with st.sidebar:
          "PV - éolien offshore - éolien onshore" : 4,
          "au prorata de la production" : 5}
 
-    st.header("Ressources :")
 
-    col1_left, col2_left  = st.columns([1, 1])
 
-    with col1_left :
+    URL_STRING = "https://github.com/Theober17/Simulateur_Systeme_Electrique_Francais/blob/main/README.md"
 
-        URL_STRING = "https://www.rte-france.com/analyses-tendances-et-prospectives/bilan-previsionnel-2050-futurs-energetiques"
+    st.markdown(
+        f'<a href="{URL_STRING}" style="display: inline-block; padding: 6px 10px; background-color: #00A6D9; color: white; text-align: center; text-decoration: none; border-radius: 7px;">ReadMe</a>',
+        unsafe_allow_html=True
+    )
 
-        st.markdown(
-            f'<a href="{URL_STRING}" style="display: inline-block; padding: 6px 10px; background-color: #00A6D9; color: white; text-align: center; text-decoration: none; border-radius: 7px;">infos scénarios</a>',
-            unsafe_allow_html=True
-        )
-
-    with col2_left :
-        st.button("'read me' file")
 
 
 
