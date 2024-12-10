@@ -49,18 +49,18 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 Le simulateur modélise le dispatching des générateurs programmables et intermittents au pas horaire sur une année. Il reproduit le fonctionnement du marché d'électricité selon l'ordre de mérite des coûts marginaux de production.
 
 ### Entrées :
-Capacités installées en début d'année.
-Facteurs de capacité horaires pour l'hydroélectricité, l'éolien (terrestre et marin) et le solaire.
-Contraintes opérationnelles (ramping, seuils minimaux).
-Interconnexions import-export.
-Profil horaire de la demande.
-Taux de pertes.
+- Capacités installées en début d'année.
+- Facteurs de capacité horaires pour l'hydroélectricité, l'éolien (terrestre et marin) et le solaire.
+- Contraintes opérationnelles (ramping, seuils minimaux).
+- Interconnexions import-export.
+- Profil horaire de la demande.
+- Taux de pertes.
 ### Sorties :
-Production horaire par technologie.
-Flux import-export.
-Effacement horaire de l'offre.
-Manques d'offre ponctuels.
-Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
+- Production horaire par technologie.
+- Flux import-export.
+- Effacement horaire de l'offre.
+- Manques d'offre ponctuels.
+- Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
 
 ## Documentation
 - RTE [Futurs énergétiques 2050](https://www.rte-france.com/analyses-tendances-et-prospectives/bilan-previsionnel-2050-futurs-energetiques)
