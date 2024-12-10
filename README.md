@@ -9,17 +9,17 @@ Ce simulateur pédagogique et analytique vise à sensibiliser les utilisateurs a
 Le projet s'appuie sur les travaux de Madame LOISEL et Monsieur PINDER réalisés en 2020 dans le cadre du projet WEAMEC « EMA ».
 
 ## Définitions
-Ramping : Capacité d'une installation à faire varier sa production :
-Pmax/min(t=h) = +/- Ramping * P(t=h-1)
-Effacement : Excès ou défaut d'énergie non compensable.
-Effacement positif : défaut de production.
-Effacement négatif : surproduction.
-Soldes échanges : Différence entre exportations et importations :
+- Ramping : Capacité d'une installation à faire varier sa production :
+- Pmax/min(t=h) = +/- Ramping * P(t=h-1)
+- Effacement : Excès ou défaut d'énergie non compensable.
+- Effacement positif : défaut de production.
+- Effacement négatif : surproduction.
+- Soldes échanges : Différence entre exportations et importations :
 SE(t=h) = exportations(t=h) - importations(t=h)
-Variation nécessaire : Demande de variation de production aux usines pilotables.
-STEP (Station de Transfert d'Énergie par Pompage) : Système de stockage d'énergie par pompage-turbinage.
-Thermique décarboné : Production thermique utilisant de l'hydrogène produit par électrolyse.
-Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
+- Variation nécessaire : Demande de variation de production aux usines pilotables.
+- STEP (Station de Transfert d'Énergie par Pompage) : Système de stockage d'énergie par pompage-turbinage.
+- Thermique décarboné : Production thermique utilisant de l'hydrogène produit par électrolyse.
+- Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
 
 ## Navigation
 1 . Sélectionner un scénario de production et un scénario de consommation
