@@ -30,7 +30,7 @@ Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
 
 3. Analyser les résultats de la simulation
 
-![plot](README_Pic/Nav_3.png)
+![Alt text](README_Pic/Nav_3.png)
 
 ## Principales hypothèses
 Nucléaire : 66% en base, 33% flexible.
