@@ -1,4 +1,5 @@
 # Simulateur du Système Électrique Français
+<!-- Remplacez par le chemin de votre image -->
 
 ### Préambule
 La France, à travers la loi énergie-climat du 8 novembre 2019, s'est engagée à atteindre la neutralité carbone d'ici 2050. Cela impose une transformation profonde, notamment dans le secteur énergétique. En réponse, RTE a publié le rapport Futurs énergétiques 2050, explorant plusieurs trajectoires de décarbonation du système électrique tout en garantissant la sécurité d'approvisionnement.
@@ -19,10 +20,17 @@ Variation nécessaire : Demande de variation de production aux usines pilotables
 STEP (Station de Transfert d'Énergie par Pompage) : Système de stockage d'énergie par pompage-turbinage.
 Thermique décarboné : Production thermique utilisant de l'hydrogène produit par électrolyse.
 Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
-Navigation
-Sélectionner un scénario de production et un scénario de consommation.
-Lancer le simulateur.
-Analyser les résultats de la simulation.
+
+### Navigation
+Sélectionner un scénario de production et un scénario de consommation
+<!-- Remplacez par le chemin de votre image -->
+
+Lancer le simulateur
+<!-- Remplacez par le chemin de votre image -->
+
+Analyser les résultats de la simulation
+<!-- Remplacez par le chemin de votre image -->
+
 Principales hypothèses
 Nucléaire : 66% en base, 33% flexible.
 Disponibilité annuelle :
@@ -53,6 +61,6 @@ Effacement horaire de l'offre.
 Manques d'offre ponctuels.
 Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
 
-### Documentation
+###Documentation
 RTE - Futurs énergétiques 2050
 Projet WEAMEC « EMA »
