@@ -1913,7 +1913,7 @@ if st.session_state.button_clicked:
         else:
             st.warning("Veuillez sélectionner au moins un élément à tracer.")
 
-        col1, col2, col5, col3, col4 = st.columns([1, 5, 2, 6, 1])
+        col2, col1, col3 = st.columns([10, 1, 12])
 
         with col2 : 
             st.write("##### Production après ajustement")
@@ -1931,9 +1931,9 @@ if st.session_state.button_clicked:
 
             df_desequilibre = pd.DataFrame(data_desequilibre)
 
-            st.dataframe(df_desequilibre.iloc[:2], hide_index=True)
+            st.dataframe(df_desequilibre.iloc[:2], hide_index=True, use_container_width=True)
             st.write(f"Effacement potentiel des énergies renouvables dans l'ordre suivant : **{st.session_state.ordre_effacement_EnR}**")
-            st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True)
+            st.dataframe(df_desequilibre[[" ", 'volume (TWh)', 'part de la production (%)']].iloc[2:], hide_index=True, use_container_width=True)
 
             st.write(f"Flexibilité de la consommation pour le scénario {st.session_state.scenario_prod} : **{flexinillite_conso[st.session_state.scenario_prod]} GW**")
         
