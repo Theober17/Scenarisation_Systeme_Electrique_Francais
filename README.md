@@ -23,7 +23,7 @@ Facteur de Capacité (FC) : Ratio d'utilisation d'une installation.
 
 ### Navigation
 Sélectionner un scénario de production et un scénario de consommation
-<!-- README_Pic/Nav_1.png -->
+![plot](README_Pic/Nav_1.png)
 
 Lancer le simulateur
 <!-- Remplacez par le chemin de votre image -->
