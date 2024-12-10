@@ -37,7 +37,7 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 
 ## Principales hypothèses
 - Nucléaire : 66% en base, 33% flexible.
-- Disponibilité annuelle :
+- Disponibilité annuelle du parc nucléaire :
   - Décembre-Mars : 91%
   - Mars-Mai : 80%
   - Mai-Novembre : 67%
@@ -49,7 +49,7 @@ SE(t=h) = exportations(t=h) - importations(t=h)
 - Pertes réseau : 7%.
 
 ## Description
-Le simulateur modélise le dispatching des générateurs programmables et intermittents au pas horaire sur une année. Il reproduit le fonctionnement du marché d'électricité selon l'ordre de mérite des coûts marginaux de production.
+Le simulateur modélise le dispatching des générateurs programmables et intermittents au pas horaire sur une année (2050). Il reproduit le fonctionnement du marché d'électricité selon l'ordre de mérite des coûts marginaux de production.
 
 ### Entrées :
 - Capacités installées en début d'année.
@@ -63,7 +63,9 @@ Le simulateur modélise le dispatching des générateurs programmables et interm
 - Flux import-export.
 - Effacement horaire de l'offre.
 - Manques d'offre ponctuels.
-- Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
+- Cycles de charge /décharge du parc de batteries
+
+Le simulateur respecte l'équilibre entre l'offre et la demande tout en prenant en compte les contraintes opérationnelles des centrales et la disponibilité des facteurs naturels.
 
 ## Documentation
 - RTE [Futurs énergétiques 2050](https://www.rte-france.com/analyses-tendances-et-prospectives/bilan-previsionnel-2050-futurs-energetiques)
