@@ -1621,7 +1621,7 @@ with st.sidebar:
         # Choix du scénario
         st.session_state.scenario_conso = st.radio(
             "Choisir un scénario RTE 2050 :",
-            ["réindustrialisation", "sobriété", "efficassité électrique moindre", "électrification +", "électrification -", "Hydrogène +"],
+            ["réindustrialisation", "sobriété", "efficacité électrique moindre", "électrification +", "électrification -", "Hydrogène +"],
             captions = ['752 TWh', '555 TWh', '714 TWh', '700 TWh', '578 TWh', '754 TWh'],
             index=0,
         )
